@@ -13,9 +13,9 @@ April 21, 2014
 
 Discuss here the data we used and what kind of methods we used to combine it.
 
-LINK THE GUN INDEX SITE
-LINK TO HOMICIDE DATA
-LINK TO THE CENSUS DATA
+[Gun Law Index Data](http://www.bradycampaign.org/2013-state-scorecard)
+[Homicide Data](http://www.icpsr.umich.edu/icpsrweb/content/NACJD/guides/ucr.html)
+[Census Demography Data](http://www.bls.gov/lau/#cntyaa)
 
 CODE USED TO CLEAN DATA GOES HERE
 
@@ -35,8 +35,8 @@ Now that we better understand many of the variables in play, we want to explore 
 
 LAUREN'S GRAPH GOES HERE
 
-LINKS TO SLICKGRID
-LINKS TO PARALLEL COORDINATES
+[Slickgrid](https://github.com/mleibman/SlickGrid)
+[Parallel Coordinates](https://github.com/syntagmatic/parallel-coordinates)
 
 ## Developing the Model
 
