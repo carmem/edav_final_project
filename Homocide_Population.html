@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Gun Homocide Rate vs Population</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+	<style type="text/css">
+	.axis path,
+	.axis line {
+
+				fill: none;
+				stroke:black;
+				shape-rendering: cripEdges;
+	}
+	.axis text {
+		font-family: sans-serif;
+		font-size: 11px;
+		font-weight: bold;
+	}
+	.outer2011 {
+		background-color: rgb(230,230,230);
+	}
+	.outer2012 {
+		background-color: rgb(240,240,240);
+	}
+	.d3-tip {
+  		line-height: 1;
+  		font-weight: bold;
+  		padding: 12px;
+  		background: rgba(0, 0, 0, 0.8);
+  		color: #fff;
+  		border-radius: 2px;
+	}
+
+/* Creates a small triangle extender for the tooltip */
+	.d3-tip:after {
+  		box-sizing: border-box;
+  		display: inline;
+  		font-size: 10px;
+  		width: 100%;
+  		line-height: 1;
+  		color: rgba(0, 0, 0, 0.8);
+  		content: "\25BC";
+  		position: absolute;
+  		text-align: center;
+	}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  	margin: -1px 0 0 0;
+  	top: 100%;
+  	left: 0;
+	}
+	</style>
+</head>
+
+<div id="area1" class="outer2011"> 
+</div>
+<div id="area2" class="outer2012">
+</div>
+<body>
+
+
+	<script>
+	
+	d3.csv("D.csv", function(data){
+
+
+		var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    				width = 500 - margin.left - margin.right,
+    				height = 500- margin.top - margin.bottom;
+
+
+		var x = d3.scale.linear()
+							.domain([0,100])
+							.range([0,width]);
+
+		var xaxis = d3.svg.axis()
+						.scale(x);
+
+		var y = d3.scale.linear()
+							.domain([1,0])
+							.range([width*-1,0]);
+
+		var yaxis = d3.svg.axis()
+						.scale(y)
+						.orient("left");
+
+
+		var tip = d3.tip()
+  					.attr('class', 'd3-tip')
+  					.offset([-10, 0])
+  					.html(function(d) {
+    				return "<strong>" + d.STATE + ":</strong><span style='color:red'>" + d.H2011 + "</span>";
+  					});
+
+
+		var canvas = d3.select("#area1").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.right)
+			.append("g")
+    		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    	canvas.call(tip)
+
+    	var circles = canvas.selectAll("circle")
+                          .data(data)
+                          .enter()
+                          .append("circle")
+                          .on('mouseover', tip.show)
+                          .on('mouseout', tip.hide);
+                          
+
+		var circleAttributes = circles
+                       		.attr("cx", function (d) { return d.I2011 * (width/100); })
+                       		.attr("cy", function (d) { return (d.G2011/(d.Pop2011/10000)) * width; })
+                       		.attr("r", 10)
+                       		.attr("fill", function(d) {return "rgb(0, 0, " + d.H2011  + ")";});
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(xaxis);
+
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(yaxis);
+
+        canvas.append("text")
+        	.attr("x", (width / 2))             
+        	.attr("text-anchor", "middle")  
+        	.style("font-size", "16px") 
+        	.style("text-decoration", "underline") 
+        	.text("Blue States 2011")
+
+        
+	})
+
+	d3.csv("R.csv", function(data){
+
+
+		var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    				width = 500 - margin.left - margin.right,
+    				height = 500 - margin.top - margin.bottom;
+
+
+		var x = d3.scale.linear()
+							.domain([0,100])
+							.range([0,width]);
+
+		var xaxis = d3.svg.axis()
+						.scale(x);
+
+		var y = d3.scale.linear()
+							.domain([1,0])
+							.range([width*-1,0]);
+
+		var yaxis = d3.svg.axis()
+						.scale(y)
+						.orient("left");
+
+
+		var tip = d3.tip()
+  					.attr('class', 'd3-tip')
+  					.offset([-10, 0])
+  					.html(function(d) {
+    				return "<strong>" + d.STATE + ":</strong><span style='color:red'>" + d.H2011 + "</span>";
+  					});
+
+
+		var canvas = d3.select("#area1").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.right)
+			.append("g")
+    		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    	canvas.call(tip)
+
+    	var circles = canvas.selectAll("circle")
+                          .data(data)
+                          .enter()
+                          .append("circle")
+                          .on('mouseover', tip.show)
+                          .on('mouseout', tip.hide);
+                          
+
+		var circleAttributes = circles
+                       		.attr("cx", function (d) { return d.I2011 * (width/100); })
+                       		.attr("cy", function (d) { return (d.G2011/(d.Pop2011/10000)) * width; })
+                       		.attr("r", 10)
+                       		.attr("fill", function(d) {return "rgb(" + d.H2011  + ", 0,0 )";});
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(xaxis);
+
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(yaxis);
+
+        canvas.append("text")
+        	.attr("x", (width / 2))             
+        	.attr("text-anchor", "middle")  
+        	.style("font-size", "16px") 
+        	.style("text-decoration", "underline") 
+        	.text("Red States 2011")
+        
+	})
+	
+		d3.csv("D.csv", function(data){
+
+
+		var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    				width = 500 - margin.left - margin.right,
+    				height = 500 - margin.top - margin.bottom;
+
+
+		var x = d3.scale.linear()
+							.domain([0,100])
+							.range([0,width]);
+
+		var xaxis = d3.svg.axis()
+						.scale(x);
+
+		var y = d3.scale.linear()
+							.domain([1,0])
+							.range([width*-1,0]);
+
+		var yaxis = d3.svg.axis()
+						.scale(y)
+						.orient("left");
+
+
+		var tip = d3.tip()
+  					.attr('class', 'd3-tip')
+  					.offset([-10, 0])
+  					.html(function(d) {
+    				return "<strong>" + d.STATE + ":</strong><span style='color:red'>" + d.H2012 + "</span>";
+  					});
+
+
+		var canvas = d3.select("#area2").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.right)
+			.append("g")
+    		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    	canvas.call(tip)
+
+    	var circles = canvas.selectAll("circle")
+                          .data(data)
+                          .enter()
+                          .append("circle")
+                          .on('mouseover', tip.show)
+                          .on('mouseout', tip.hide);
+                          
+
+		var circleAttributes = circles
+                       		.attr("cx", function (d) { return d.I2012 * (width/100); })
+                       		.attr("cy", function (d) { return (d.G2012/(d.Pop2011/10000)) * width; })
+                       		.attr("r", 10)
+                       		.attr("fill", function(d) {return "rgb(0, 0, " + d.H2011  + ")";});
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(xaxis);
+
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(yaxis);
+
+        canvas.append("text")
+        	.attr("x", (width / 2))             
+        	.attr("text-anchor", "middle")  
+        	.style("font-size", "16px") 
+        	.style("text-decoration", "underline") 
+        	.text("Blue States 2013")
+
+        
+	})
+d3.csv("R.csv", function(data){
+
+
+		var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    				width = 500 - margin.left - margin.right,
+    				height = 500 - margin.top - margin.bottom;
+
+
+		var x = d3.scale.linear()
+							.domain([0,100])
+							.range([0,width]);
+
+		var xaxis = d3.svg.axis()
+						.scale(x);
+
+		var y = d3.scale.linear()
+							.domain([1,0])
+							.range([width*-1,0]);
+
+		var yaxis = d3.svg.axis()
+						.scale(y)
+						.orient("left");
+
+
+		var tip = d3.tip()
+  					.attr('class', 'd3-tip')
+  					.offset([-10, 0])
+  					.html(function(d) {
+    				return "<strong>" + d.STATE + ":</strong><span style='color:red'>" + d.H2012 + "</span>";
+  					});
+
+
+		var canvas = d3.select("#area2").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.right)
+			.append("g")
+    		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    	canvas.call(tip)
+
+    	var circles = canvas.selectAll("circle")
+                          .data(data)
+                          .enter()
+                          .append("circle")
+                          .on('mouseover', tip.show)
+                          .on('mouseout', tip.hide);
+    
+  
+		var circleAttributes = circles
+                       		.attr("cx", function (d) { return d.I2012 * (width/100); })
+                       		.attr("cy", function (d) { return (d.G2012/(d.Pop2011/10000)) * width; })
+                       		.attr("r", 10)
+                       		.attr("fill", function(d) {return "rgb(" + d.H2011  + ", 0,0 )";})
+                       		;
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(xaxis);
+
+        canvas.append("g")
+        		.attr("class","axis")
+        		.attr("transform", "translate(-10,450)")
+        		.call(yaxis);
+
+        canvas.append("text")
+        	.attr("x", (width / 2))             
+        	.attr("text-anchor", "middle")  
+        	.style("font-size", "16px") 
+        	.style("text-decoration", "underline") 
+        	.text("Red States 2013")
+	})
+
+	</script>
+
+
+</body>
+
+</html>
