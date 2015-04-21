@@ -1,3 +1,6 @@
+library('hydroGOF')
+
+
 Y1 <- read.csv(path.expand("~/Desktop/Y1.csv"),header=TRUE,sep=",")
 Y2 <- read.csv(path.expand("~/Desktop/Y2.csv"),header=TRUE,sep=",")
 X1Y1Y2 <- read.csv(path.expand("~/Desktop/X1Y1Y2.csv"),header=TRUE,sep=",")
