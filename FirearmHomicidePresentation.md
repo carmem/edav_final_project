@@ -13,8 +13,6 @@ April 21, 2014
 ## Introduction
 ***
 
-Discuss here the data we used and what kind of methods we used to combine it.
-
 For our project, we wanted to explore firearm policy in the United States and evaluate any sort of correlation that existed between the strictness of gun laws in a state and the number of observed firearm homicides (as well as homicides in general). Our original discussions were international in focus, comparing various countries on their national homicide rates to their gun policy choices. However, after reviewing available data sources, we found we would have better luck exploring the same topic internally within the US. Not only would we have 50 different gun policies for each state, but we would also be able to find much more granular data at the county level than we would have had internationally.
 
 The primary data source we needed to find was a indicator of gun law strictness for each state. We didn't have enough expertise in gun policy to generate a ranking ourselves, but luckily we found an index that specializes in tracking gun policies.
