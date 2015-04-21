@@ -172,27 +172,117 @@ Full SQL code [here](https://github.com/mbisaha/edav_final_project/blob/master/D
 
 After pulling the variety of variables we considered building into our model, we wanted to better visualize the county-by-county trends across the US. For this, we turned to building choropleth maps for each data point. Taken together, these charts helped us understand each individual variable in greater detail, as well identify which variables may be conveying similar information in terms of our final model.
 
+
 __Choropleth Maps__
+* [Firearm Homicides](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Firearm_Homicides.html)
+* [Homicides](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Homicides.html)
+* [Population](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population.html)
+* [Population Density](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_Density.html)
+* [Urban-Dwelling Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Urban_Population_Density.html)
+* [Under-18 Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_Under_18.html)
+* [Under Poverty Line Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_Under_Poverty_Line.html)
+* [High School Graduate Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_High_School_Graduate.html)
+* 
 
+Using the ['leafletR'](https://github.com/chgrl/leafletR) package (which seems to offer more flexibility than the 'leaflet' package produced by RStudio), each individual HTML map can be built directly from data in R.
 
-LINKS TO MAPS, SHORT EXPLANATION, AND CODE CHUNK
+```R
+library("leafletR")
+
+## green-red (low-high) color palette
+set_map_color_grrd <- colorRampPalette(c('green', 'white', 'red'))
+
+map_county <- toGeoJSON(countydata, dest="/Users/mbisaha/Desktop/US_County_Shapefiles")
+
+## map UnderPovertyLine							
+sty.PopUPoverty <- styleGrad(	prop="BelowPovertyPercent",
+								breaks= c(0,2,5,10,15,20,25,30,40,50,60),
+								style.par="col",
+								style.val=set_map_color_grrd(10),
+								leg="Percent Population Below Poverty Line",
+								fill.alpha=0.8,
+								col="black",
+								lwd=0.2,
+								marker=NULL)
+
+map <- leaflet(	data=map_county, 
+				dest="/Users/mbisaha/Desktop/US_County_Shapefiles/ChoroplethMaps", 
+				title="Population Under Poverty Line",
+				base.map="positron",
+				style=sty.PopUPoverty,
+				popup=c("County","State","BelowPovertyPercent"),
+				controls="all",
+				incl.data=TRUE)
+```
+
+Full R code [here](https://github.com/mbisaha/edav_final_project/blob/master/choropleth_code.R).
+
+Population and Population Density are extremely correlated, for example, and so both shouldn't be used in our final model due to collinearity concerns.
 
 ## Exploring the potential variables further with parallel coordinates
 
-Now that we better understand many of the variables in play, we want to explore the relationships each 
+Now that we better understand many of the variables in play, we want to explore the relationships each one has not only to each other, but to total number of homicides and the gun law strictness index. For this exploration, we turned to parallel coordinates graphs which gave us insight into variable interactions.
 
-LAUREN'S GRAPH GOES HERE
+This graph required both the [Parallel Coordinates](https://github.com/syntagmatic/parallel-coordinates) and [Slickgrid](https://github.com/mleibman/SlickGrid) packages in order to build the chart in d3.
 
-[Slickgrid](https://github.com/mleibman/SlickGrid)
-[Parallel Coordinates](https://github.com/syntagmatic/parallel-coordinates)
+The slickgrids functionality in particular was extremely useful in mapping individual trajectories in the parallel coordinates graph to specific counties, states, and variable values. In addition to being a great tool for analyzing variable interaction, we also found it useful in catching outliers that deviate from the trend (we even uncovered some misaligned data issues in our first iteration using this chart).
+
+Source Code
+* [Scatter](https://github.com/mbisaha/edav_final_project/blob/master/Lauren/scatter.html)
+* [Slickgrid](https://github.com/mbisaha/edav_final_project/blob/master/Lauren/slickgrid.html)
+
 
 ## Developing the Model
 
-CODE BLOCK CLUSTERING THE DATA W/K-MEANS GOES HERE
+At this point, it was time to settle on which variables to include in our model. This was equal parts art and science, as we attempted to eliminate as many highly correlated variables from our list while still capturing a range of indicators.
 
+After several rounds of testing model variables, we came to realize that the national dataset we were dealing with would need to be split into two clusters to get more accurate results. The small share of counties with highly dense urban areas were overpowering rural counties who were operating on a widely different scale. To account for this, we opted to use K-means to cluster the data into both rural and urban clusters and run our regression separately on both datasets.
 
-CODE BLOCK ON RUNNING THE MODEL GOES HERE
+```R
+Y1 <- read.csv(path.expand("~/Desktop/Y1.csv"),header=TRUE,sep=",")
+Y2 <- read.csv(path.expand("~/Desktop/Y2.csv"),header=TRUE,sep=",")
+X1Y1Y2 <- read.csv(path.expand("~/Desktop/X1Y1Y2.csv"),header=TRUE,sep=",")
 
+X <- as.data.frame(X1Y1Y2[,1:9])
+Ys <- as.data.frame(X1Y1Y2[,10:11])
+scaledX <- scale(X)
+
+clusterIDs <- kmeans(X[,-c(1)],4, iter.max=1000)$cluster
+cluster1IDs <- which(clusterIDs==1)
+cluster2IDs <- which(clusterIDs==2)
+cluster3IDs <- which(clusterIDs==3)
+cluster4IDs <- which(clusterIDs==4)
+urbanIDs <- c(cluster2IDs,cluster3IDs,cluster4IDs)
+
+ruralX <- X[cluster1IDs,]
+urbanX <- X[urbanIDs,]
+scaled_ruralX <- scale(ruralX)
+scaled_urbanX <- scale(urbanX)
+
+ruralYs <- Ys[cluster1IDs,]
+urbanYs <- Ys[urbanIDs,]
+```
+
+At this point, we were finally ready to run our linear model on the dataset(s) and learn the effects of each variable on gun and non-gun homicides.
+
+```R
+## scaled gunhomicides
+AllData <- cbind(scaled_ruralX, ruralYs)
+
+linRegres = lm(FH ~ Index + Density + PopU182013 + FemalePercent + WhiteAlonePercent + LessThanHighSchool + BelowPovertyPercent + UnEmployement + PopPerSqMile2010, data = AllData)
+linRegres
+
+ws[,1] <- linRegres$coefficients
+
+AllData <- cbind(scaled_urbanX, urbanYs)
+
+linRegres = lm(FH ~ Index + Density + PopU182013 + FemalePercent + WhiteAlonePercent + LessThanHighSchool + BelowPovertyPercent + UnEmployement + PopPerSqMile2010, data = AllData)
+linRegres
+
+ws[,2] <- linRegres$coefficients
+```
+
+Full code for K-means clustering and regression model [here](https://github.com/mbisaha/edav_final_project/blob/master/Model%20code%20block.R).
 
 ## Model Results
 
