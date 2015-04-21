@@ -5,7 +5,9 @@ output: html_document
 ---
 
 # Firearm Homicide and Demography: "Do Gun Laws Matter?"
+
 Carmem Domingues, Labib Fawaz, Lauren McCarthy, Michael Bisaha
+
 April 21, 2014
 
 ## Introduction
@@ -17,7 +19,9 @@ Discuss here the data we used and what kind of methods we used to combine it.
 
 [Homicide Data](http://www.icpsr.umich.edu/icpsrweb/content/NACJD/guides/ucr.html)
 
-[Census Demography Data](http://www.bls.gov/lau/#cntyaa)
+[Census Demography Data](http://quickfacts.census.gov/qfd/download_data.html)
+
+[Unemployment Data](http://www.bls.gov/lau/#cntyaa)
 
 Once we identified the data sources we'd be working with, there was an impressive amount of data munging to do. The data wasn't always clean or complete, and more importantly we had to spend a great deal of time matching up state and county names across separate datasets to piece together a full picture. Some datasets had well-defined county codes that could be applied across multiple fields, but others required matching up text identifiers with with different spellings and encodings.
 
@@ -173,7 +177,7 @@ Full SQL code [here](https://github.com/mbisaha/edav_final_project/blob/master/D
 After pulling the variety of variables we considered building into our model, we wanted to better visualize the county-by-county trends across the US. For this, we turned to building choropleth maps for each data point. Taken together, these charts helped us understand each individual variable in greater detail, as well identify which variables may be conveying similar information in terms of our final model.
 
 
-__Choropleth Maps__
+__Choropleth Maps (raw HTML)__
 * [Firearm Homicides](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Firearm_Homicides.html)
 * [Homicides](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Homicides.html)
 * [Population](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population.html)
@@ -182,7 +186,6 @@ __Choropleth Maps__
 * [Under-18 Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_Under_18.html)
 * [Under Poverty Line Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_Under_Poverty_Line.html)
 * [High School Graduate Percentage](https://raw.githubusercontent.com/mbisaha/edav_final_project/master/Choropleths/Population_High_School_Graduate.html)
-* 
 
 Using the ['leafletR'](https://github.com/chgrl/leafletR) package (which seems to offer more flexibility than the 'leaflet' package produced by RStudio), each individual HTML map can be built directly from data in R.
 
@@ -286,16 +289,20 @@ Full code for K-means clustering and regression model [here](https://github.com/
 
 ## Model Results
 
+In the end, the model ended up producing some interesting results. In rural areas, the primary predictor of increased gun violence was population density. The remainder of factors had far smaller coefficients, and were tightly clustered. Higher gun strictness was positively correlated, but was on the same order as most other indicators.
+
+In the model for urban areas, the primary predictor of gun homicides by far was the percent of the population without a high school degree. This was followed by the percent of county population living in an urban area and percent of population below the poverty line, respectively. The negative correlation with stricter gun laws was more significant than in the rural model, but was still a marginal factor behind other variables.
+
 [Model Results for Firearm Homicides](http://htmlpreview.github.com/?https://github.com/carmem/edav_final_project/blob/master/D3/gun_homicides.html)
 
 [Model Results for Homicides](http://htmlpreview.github.com/?https://github.com/carmem/edav_final_project/blob/master/D3/homicides.html)
 
-
+Overall, we concluded that strict gun laws may in fact have a negative correlation with gun homicides in urban areas, with rural firearm homicides being less sensitive to gun policies. In both models, though, the effects of gun laws were marginal and were far less predictive than other variables.
 
 
 ## Gun Homicides and Gun Index changes over time
 
-LABIB's GRAPH GOES HERE
+Lastly, we decided to review our results in the context of recent policy changes. To do this, we found data in the change in gun law strictness in each state in recent years and compared these shifts to the change in firearm homicides over the same period.
 
-
+[Changes in Gun Homicide per Population](https://github.com/mbisaha/edav_final_project/blob/master/Homocide_Population.html)
 
