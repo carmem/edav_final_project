@@ -48,7 +48,10 @@ CODE BLOCK ON RUNNING THE MODEL GOES HERE
 
 ## Model Results
 
-CARMEM's GRAPHS OF THE MODEL RESULTS GO HERE (1 for Firearm Homicides, 1 for regular Homicides)
+[Model Results for Firearm Homicides](http://htmlpreview.github.com/?https://github.com/carmem/edav_final_project/blob/master/D3/gun_homicides.html)
+
+[Model Results for Homicides](http://htmlpreview.github.com/?https://github.com/carmem/edav_final_project/blob/master/D3/homicides.html)
+
 
 
 
