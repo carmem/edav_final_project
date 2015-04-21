@@ -30,8 +30,8 @@ body {
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="colorbrewer.js"></script>
-<link rel="stylesheet" href="colorbrewer.css" type="text/css"/>
+<script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/colorbrewer.js"></script>
+<link rel="stylesheet" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/colorbrewer.css" type="text/css"/>
 
 <script>
 
@@ -79,7 +79,7 @@ var tooltip = d3.select("body").append("div")
     .style("opacity", 0);
 
 // load data
-d3.csv("data/states_index.csv", function(error, data) {
+d3.csv("https://github.com/carmem/edav_final_project/tree/master/Lauren/data/states_index.csv", function(error, data) {
 
   // change string (from CSV) into number format
   data.forEach(function(d) {

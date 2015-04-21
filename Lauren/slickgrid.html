@@ -2,27 +2,27 @@
 <title>Linking to SlickGrid</title>
 
 <!-- SlickGrid -->
-  <link rel="stylesheet" href="lib/slickgrid/slick.grid.css" type="text/css"/>
-  <link rel="stylesheet" href="lib/slickgrid/jquery-ui-1.8.16.custom.css" type="text/css"/>
-  <link rel="stylesheet" href="lib/slickgrid/examples.css" type="text/css"/>
-  <link rel="stylesheet" href="lib/slickgrid/slick-default-theme.css" type="text/css"/>
-  <link rel="stylesheet" href="lib/slickgrid/slick.pager.css" type="text/css"/>
+  <link rel="stylesheet" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick.grid.css" type="text/css"/>
+  <link rel="stylesheet" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/jquery-ui-1.8.16.custom.css" type="text/css"/>
+  <link rel="stylesheet" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/examples.css" type="text/css"/>
+  <link rel="stylesheet" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick-default-theme.css" type="text/css"/>
+  <link rel="stylesheet" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick.pager.css" type="text/css"/>
  
-  <script src="lib/slickgrid/jquery-1.7.min.js"></script>
-  <script src="lib/slickgrid/jquery.event.drag-2.2.js"></script>
-  <script src="lib/slickgrid/slick.core.js"></script>
-  <script src="lib/slickgrid/slick.grid.js"></script>
-  <script src="lib/slickgrid/slick.pager.js"></script>
-  <script src="lib/slickgrid/slick.dataview.js"></script>
+  <script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/jquery-1.7.min.js"></script>
+  <script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/jquery.event.drag-2.2.js"></script>
+  <script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick.core.js"></script>
+  <script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick.grid.js"></script>
+  <script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick.pager.js"></script>
+  <script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/slick.dataview.js"></script>
 
 <!-- End SlickGrid -->
 
-<link href="d3.parcoords.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/d3.parcoords.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/style.css">
 
 
-<script src="_/d3.min.js"></script>
-<script src="_/d3.parcoords.js"></script>
+<script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/d3.min.js"></script>
+<script src="https://github.com/carmem/edav_final_project/tree/master/Lauren/_/d3.parcoords.js"></script>
 
 <body>
 <h1> Parallel Coordinates with Slick Grid </h1>
@@ -45,7 +45,7 @@ var parcoords = d3.parcoords()("#example")
       bottom: 16
     });
 // load csv file and create the chart
-d3.csv('data/para_coor.csv', function(data) {
+d3.csv('https://github.com/carmem/edav_final_project/tree/master/Lauren/data/para_coor.csv', function(data) {
   // slickgrid needs each data element to have an id
   data.forEach(function(d,i) { d.id = d.id || i; });
   parcoords
