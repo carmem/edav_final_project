@@ -20,26 +20,24 @@ def mapper(argv):
 
 	state_dict = {}
 
-	f = open('state_abbreviations', 'r')
+	f = open('codes', 'r')
 	for l in f:
-		name, ab = l.strip().split("\t")
-		# print "%s|%s" %(ab, name)
+		name, ab = line.strip().split("\t")
 		if ab not in state_dict:
 			state_dict[ab] = name
 
-	# print len(state_dict)
-	# print state_dict
+	print len(state_dict)
+	print state_dict
 
 	errors = 0
 	for line in sys.stdin:
 		try:
-			data = line.strip().split("|")
-			code = data[0]
-			data1 = data[1].strip().split(',')
-			if len(data1) == 2:
-				county = data1[0]
-				state = state_dict[data1[1].replace(" ","")]
-				print "%s|%s|%s" %(code, county, state)
+			data = line.strip().split("\t")
+			county = data[0]
+			total = int(data[1])
+			hispanic = float(data[2])/total
+			non_hispanic = float(data[3])/total
+			print "%s,%f,%f" %(county, hispanic, non_hispanic)
 
 		except Exception as e:
 			errors += 1
